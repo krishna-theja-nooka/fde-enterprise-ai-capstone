@@ -49,7 +49,18 @@ jobs:
 
       - name: Check readiness and grounded answer
         run: |
-          curl --retry 15 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8000/ready
+          ready=false
+          for attempt in {1..30}; do
+            if curl --silent --show-error --fail --max-time 2 http://127.0.0.1:8000/ready; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" != "true" ]; then
+            docker logs fleet-demo
+            exit 1
+          fi
           python - <<'PY'
           import json
           import urllib.request
