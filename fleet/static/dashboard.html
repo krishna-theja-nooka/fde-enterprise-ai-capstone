@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fleet Intelligence Copilot</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#17243a;font:16px system-ui,sans-serif}
+header{background:#11243b;color:white;padding:26px 42px;display:flex;align-items:center;justify-content:space-between}
+h1{font-size:27px;margin:5px 0}h2{font-size:18px;margin:0 0 16px}.eyebrow{font-size:12px;letter-spacing:1.6px;color:#8bb7d8}
+main{max-width:1420px;margin:auto;padding:28px 40px}a{color:#5ed4da}p{line-height:1.6;margin:8px 0;color:#57677b}
+.banner{border:1px solid #c6dce8;background:#ebf4f8;padding:15px 20px;border-radius:8px;margin-bottom:22px;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1.25fr;gap:22px}.card{background:white;border:1px solid #dae1e9;border-radius:9px;padding:24px;margin-bottom:22px}
+label{display:block;color:#526276;font-size:13px;font-weight:650;margin:16px 0 7px}input,textarea,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:5px;font:14px system-ui}
+textarea{min-height:86px;resize:vertical}button{background:#176b8a;color:white;border:0;border-radius:5px;padding:11px 16px;font-weight:650;cursor:pointer;margin:10px 6px 0 0}
+button.secondary{background:#edf2f7;color:#294258}button:disabled{opacity:.5;cursor:wait}.examples button{font-size:12px;padding:9px;background:#edf3f8;color:#335771}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f8fb;padding:16px;border:1px solid #e1e7ef;border-radius:5px;font:13px/1.6 monospace;max-height:430px;overflow:auto}
+.status{font-size:13px;color:#176b8a;min-height:24px}.pill{font-size:12px;border-radius:20px;background:#d8efe7;color:#226447;padding:6px 12px}
+.citation{border-left:3px solid #2f8baa;margin-top:16px;padding:5px 15px;font-size:14px}.citation strong{display:block}
+.foot{font-size:12px;color:#66788e;border-top:1px solid #dce3ec;padding-top:15px}details{font-size:13px}summary{cursor:pointer;color:#176b8a}
+@media(max-width:900px){.grid{grid-template-columns:1fr}main{padding:20px}header{padding:20px}}
+</style></head><body>
+<header><div><div class="eyebrow">FLEET OPERATIONS · FDE CAPSTONE</div><h1>Fleet Intelligence Copilot</h1></div><div><span class="pill">Synthetic demo</span> &nbsp; <a href="/docs">API docs ↗</a></div></header>
+<main><div class="banner">Read fleet evidence, review cited policies, and propose an action. Every case requires a different approver. No real customers, vehicles, model APIs, or external notifications.</div>
+<div class="grid"><section>
+<div class="card"><h2>Ask about your fleet</h2>
+<label for="key">X-API-Key · demo viewer / operator / approver</label><input id="key" value="demo-operator" autocomplete="off" type="password">
+<label for="question">Operational question</label><textarea id="question">Why is vehicle V-102 unavailable?</textarea>
+<div class="examples"><button type="button" data-q="Why is vehicle V-102 unavailable?">Vehicle status</button><button type="button" data-q="Which contracts end in the next 30 days?">Contract review</button><button type="button" data-q="Which vehicles have repeated maintenance alerts?">Anomalies</button><button type="button" data-q="What policy applies before approving a replacement vehicle?">Replacement policy</button></div>
+<button id="ask">Get grounded answer</button><div id="ask-status" class="status"></div>
+</div>
+<div class="card"><h2>Human approval workflow</h2><p>1. Propose as operator → 2. Review as a different approver → 3. Execute as the proposing operator.</p>
+<label for="action">Action</label><select id="action"><option value="escalation">Maintenance escalation</option><option value="support_case">Support case</option><option value="replacement_recommendation">Replacement recommendation</option></select>
+<label for="vehicle">Vehicle ID</label><input id="vehicle" value="V-102">
+<button id="propose">Propose action</button>
+<label for="approval-id">Approval ID</label><input id="approval-id" placeholder="Created by the proposal">
+<button id="review" class="secondary">Review proposal</button><button id="approve">Approve</button><button id="reject" class="secondary">Reject</button><button id="execute">Execute approved action</button>
+<div id="action-status" class="status"></div><pre id="action-result">No proposal yet. No cases have been created.</pre>
+</div></section>
+<section><div class="card"><h2>Grounded recommendation</h2><span id="outcome" class="pill">Awaiting question</span><p id="answer">Ask a question to inspect fleet evidence and policy citations.</p><div id="citations"></div>
+<label>Tool evidence</label><pre id="evidence">No tool data yet.</pre><details><summary>Response JSON and trace ID</summary><pre id="raw">No response yet.</pre></details></div>
+<div class="card"><h2>Operational evidence</h2><p>Use an approver key to load fleet-wide metrics. Trace IDs link individual requests to tool and retrieval events.</p><button id="metrics" class="secondary">Load metrics</button><pre id="metric-result">Metrics have not been requested.</pre></div></section></div>
+<div class="foot">Deterministic orchestration · parameterized SQLite tools · versioned policy citations · separate approver · atomic case creation · v0.1.0</div></main>
+<script>
+const $=id=>document.getElementById(id);
+async function api(path,body){const response=await fetch(path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json','X-API-Key':$('key').value},body:body?JSON.stringify(body):undefined});const value=await response.json();if(!response.ok)throw new Error(`HTTP ${response.status}: ${value.detail}`);return value}
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{$('question').value=b.dataset.q});
+$('ask').onclick=async()=>{ $('ask').disabled=true;try{const r=await api('/v1/copilot/ask',{question:$('question').value});$('outcome').textContent=r.status+' · '+r.intent;$('answer').textContent=r.answer;$('evidence').textContent=JSON.stringify(r.data,null,2);$('raw').textContent=JSON.stringify(r,null,2);$('ask-status').textContent='Trace: '+r.trace_id;$('citations').replaceChildren();r.citations.forEach(c=>{const div=document.createElement('div');div.className='citation';const strong=document.createElement('strong');strong.textContent=`[${c.policy_id}] ${c.title} · §${c.section} · v${c.version}`;const p=document.createElement('p');p.textContent=c.excerpt;div.append(strong,p);$('citations').append(div)})}catch(e){$('ask-status').textContent=e.message}finally{$('ask').disabled=false}};
+async function action(path,body){try{const r=await api(path,body);$('action-result').textContent=JSON.stringify(r,null,2);$('action-status').textContent=r.status||'Case returned';if(r.approval_id)$('approval-id').value=r.approval_id}catch(e){$('action-status').textContent=e.message}}
+$('propose').onclick=()=>action('/v1/actions/propose',{action:$('action').value,vehicle_id:$('vehicle').value,idempotency_key:crypto.randomUUID()});
+$('review').onclick=()=>action('/v1/approvals/'+encodeURIComponent($('approval-id').value));
+$('approve').onclick=()=>action('/v1/approvals/'+encodeURIComponent($('approval-id').value)+'/decision',{decision:'approve'});
+$('reject').onclick=()=>action('/v1/approvals/'+encodeURIComponent($('approval-id').value)+'/decision',{decision:'reject'});
+$('execute').onclick=()=>action('/v1/approvals/'+encodeURIComponent($('approval-id').value)+'/execute',{});
+$('metrics').onclick=async()=>{try{$('metric-result').textContent=JSON.stringify(await api('/v1/metrics/summary'),null,2)}catch(e){$('metric-result').textContent=e.message}};
+</script></body></html>
+

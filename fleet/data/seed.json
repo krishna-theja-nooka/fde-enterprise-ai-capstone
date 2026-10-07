@@ -1,0 +1,281 @@
+{
+  "synthetic_only": true,
+  "vehicles": [
+    [
+      "V-101",
+      "North Depot",
+      "cargo_van",
+      "available",
+      27600
+    ],
+    [
+      "V-102",
+      "North Depot",
+      "box_truck",
+      "maintenance",
+      36700
+    ],
+    [
+      "V-103",
+      "North Depot",
+      "cargo_van",
+      "available",
+      45800
+    ],
+    [
+      "V-104",
+      "North Depot",
+      "box_truck",
+      "available",
+      54900
+    ],
+    [
+      "V-105",
+      "North Depot",
+      "cargo_van",
+      "available",
+      64000
+    ],
+    [
+      "V-106",
+      "North Depot",
+      "box_truck",
+      "available",
+      73100
+    ],
+    [
+      "V-107",
+      "South Depot",
+      "cargo_van",
+      "unavailable",
+      82200
+    ],
+    [
+      "V-108",
+      "South Depot",
+      "box_truck",
+      "available",
+      91300
+    ],
+    [
+      "V-109",
+      "South Depot",
+      "cargo_van",
+      "available",
+      100400
+    ],
+    [
+      "V-110",
+      "South Depot",
+      "box_truck",
+      "available",
+      109500
+    ],
+    [
+      "V-111",
+      "South Depot",
+      "cargo_van",
+      "available",
+      118600
+    ],
+    [
+      "V-112",
+      "South Depot",
+      "box_truck",
+      "available",
+      127700
+    ]
+  ],
+  "contracts": [
+    [
+      "C-201",
+      "V-101",
+      "Fictional Customer 1",
+      0,
+      900
+    ],
+    [
+      "C-202",
+      "V-102",
+      "Fictional Customer 2",
+      10,
+      975
+    ],
+    [
+      "C-203",
+      "V-103",
+      "Fictional Customer 3",
+      30,
+      1050
+    ],
+    [
+      "C-204",
+      "V-104",
+      "Fictional Customer 4",
+      31,
+      1125
+    ],
+    [
+      "C-205",
+      "V-105",
+      "Fictional Customer 5",
+      -1,
+      1200
+    ],
+    [
+      "C-206",
+      "V-106",
+      "Fictional Customer 6",
+      65,
+      1275
+    ],
+    [
+      "C-207",
+      "V-107",
+      "Fictional Customer 7",
+      20,
+      1350
+    ],
+    [
+      "C-208",
+      "V-108",
+      "Fictional Customer 8",
+      90,
+      1425
+    ]
+  ],
+  "maintenance_events": [
+    [
+      "M-301",
+      "V-102",
+      -1,
+      "inspection",
+      "high",
+      "open",
+      "Brake inspection failed; maintenance safety hold remains open."
+    ],
+    [
+      "M-302",
+      "V-102",
+      -9,
+      "service",
+      "medium",
+      "closed",
+      "Recurring engine warning investigated."
+    ],
+    [
+      "M-303",
+      "V-102",
+      -20,
+      "service",
+      "medium",
+      "closed",
+      "Battery charging fault repaired."
+    ],
+    [
+      "M-304",
+      "V-107",
+      -2,
+      "inspection",
+      "high",
+      "open",
+      "Transmission overheating; vehicle awaiting technician review."
+    ],
+    [
+      "M-305",
+      "V-107",
+      -12,
+      "service",
+      "medium",
+      "closed",
+      "Recurring temperature warning investigated."
+    ],
+    [
+      "M-306",
+      "V-107",
+      -30,
+      "service",
+      "medium",
+      "closed",
+      "Coolant leak repaired."
+    ],
+    [
+      "M-307",
+      "V-101",
+      -31,
+      "service",
+      "low",
+      "closed",
+      "Routine inspection complete."
+    ],
+    [
+      "M-308",
+      "V-103",
+      -7,
+      "service",
+      "low",
+      "closed",
+      "Scheduled oil change complete."
+    ],
+    [
+      "M-309",
+      "V-108",
+      -40,
+      "service",
+      "medium",
+      "closed",
+      "Tyre pressure sensor replaced."
+    ],
+    [
+      "M-310",
+      "V-110",
+      -4,
+      "service",
+      "low",
+      "closed",
+      "Routine service complete."
+    ]
+  ],
+  "telematics_alerts": [
+    [
+      "T-401",
+      "V-102",
+      -1,
+      "brake_warning",
+      "critical",
+      0
+    ],
+    [
+      "T-402",
+      "V-107",
+      -2,
+      "overheat",
+      "critical",
+      0
+    ],
+    [
+      "T-403",
+      "V-109",
+      -1,
+      "engine_fault",
+      "critical",
+      0
+    ],
+    [
+      "T-404",
+      "V-103",
+      -3,
+      "tyre_pressure",
+      "low",
+      1
+    ],
+    [
+      "T-405",
+      "V-111",
+      -5,
+      "battery",
+      "medium",
+      0
+    ]
+  ]
+}
